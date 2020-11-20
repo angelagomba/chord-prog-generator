@@ -1,13 +1,14 @@
 import unittest
 import os
 import sys
-os.path.join(".")
-from local_search import local_search
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Algorithms.local_search import local_search
+from Data.Keys.keys import Key
 
 class LocalSearchTests(unittest.TestCase):
 
   def test_runnning(self):
-    self.assertEqual(local_search("C", 4, []), "C")
+    self.assertEqual(len(local_search(Key.C, True, 4, [])), 4)
 
 if __name__ == '__main__':
     unittest.main()

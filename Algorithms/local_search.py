@@ -3,6 +3,8 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Data.Chords.qualities import ChordQualities
 from Data.Chords.interval import Interval
+from Data.Keys.keys import Key
+import random
 from typing import List
 
 """
@@ -15,17 +17,23 @@ are unable to meet all the constraints, we start the algorithm again with anothe
 does not guarantee completeness, we will return the solution we have, whether complete or incomplete, before the end of the timeout.
 """
 
-def local_search(key: str, numChords: int, qualities: List[ChordQualities]):
+def local_search(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQualities]):
   """
   Purpose: Returns a chord progression in the given key that contains the given qualities.
   TODO: We want to use enums.
-  Signature: str, int, List[ChordQualities] -> List[List[str]]
+  Signature: Key, bool, int, List[ChordQualities] -> List[List[str]]
   :param key: The key the chord progression is in.
   :param qualities: The chord qualities the chord progression must have.
   """
+
   # Randomly generating chords:
   # ---------------------------
   # Randomly pick numChords amount of notes in the scale of the given key
+  scale = key["major"] if isMajor else key["minor"]
+  # TODO: Should they be unique notes, or can we repeat notes?
+  chord_prog = random.sample(scale, numChords)
+  # TODO: Attach chord quality
+  return chord_prog
   # Form those 4 notes into chords with qualities from the diatonic sequence
 
   # Building the chord progression:
@@ -44,5 +52,4 @@ def local_search(key: str, numChords: int, qualities: List[ChordQualities]):
     # If the length of used is 4, RETURN
     # Else, run the algorithm again
   # If the timeout runs out before the algorithm returns, RETURN
-  return key
 
