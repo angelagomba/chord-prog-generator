@@ -1,14 +1,21 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Data.Chords.qualities import ChordQualities
+from Data.Chords.interval import Interval
+from typing import List
+
 """
-We will leverage a backtracking algorithm to build and compile chords within the given key.
+We will leverage backtracking to build a chord progression of length numChords that contain each chord quality specified in qualities. 
+TODO: Describe how we will use backtracking to accomplish this.
 """
 
-def backtracking(key):
-  """Returns an array of generated chords that are in the given key.
-
-    # TODO: Some of the types in the signature below can probably be represented as Enums.
-    string -> string[][]
-
-    arguments:
-    key -- The key the chords must be in.
+def backtracking(key: str, numChords: int, qualities: List[ChordQualities]):
   """
-  # TODO: Implement backtracking to generate all the chords in the given key.
+  Purpose: Returns a chord progression in the given key that contains the given qualities.
+  TODO: We want to use enums.
+  Signature: str, int, List[ChordQualities] -> List[List[str]]
+  :param key: The key the chord progression is in.
+  :param qualities: The chord qualities the chord progression must have.
+  """
+  # TODO: Implement backtracking to generate a chord progression of length numChords.
