@@ -3,11 +3,12 @@ import os
 import random
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Data.Chords.qualities import ChordQualities
-from Data.Chords.interval import Interval
-from Data.Keys.keys import Key
+from Data.qualities import ChordQualities
+from Data.intervals import Interval
+from Data.keys import Key
 from typing import Dict, List, Tuple
 from utils import getScale, getTonic, getTonicCount
+from Data.constants import diatonic_seq
 
 """
 We will leverage local search to build a chord progression of length numChords that contain each chord quality specified in qualities. 
@@ -18,9 +19,6 @@ where we change our current chord to a chord with a chord quality listed in qual
 are unable to meet all the constraints, we start the algorithm again with another randomly generated chord progression. Since local search 
 does not guarantee completeness, we will return the solution we have, whether complete or incomplete, before the end of the timeout.
 """
-# TODO: Move this either into an Enum or constant
-diatonic_seq = [ChordQualities.MAJ, ChordQualities.MIN, ChordQualities.MIN, ChordQualities.MAJ, ChordQualities.MAJ, ChordQualities.MIN, ChordQualities.DIM]
-
 # TODO: Set up notes as enums
 # Chord: (root note (str), ChordQuality)
 
@@ -43,8 +41,8 @@ def local_search(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQ
   tonic = getTonic(isMajor, key)
   if remaining_qualities:
     for i, chord in enumerate(chord_prog):
-      quality = chord[1]
-      newChord = getNewChord(chord[0], key, remaining_qualities) \
+      tonic_count = getTonicCount(tonic, chord_prog)
+      newChord = getNewChord(chord[0], key, remaining_qualities, isMajor) \
         if canReplaceChord(chord, tonic, tonic_count, qualities, used_qualities) else None
       if newChord:
           newQuality = newChord[1]
@@ -102,8 +100,21 @@ def canReplaceChord(chord: Tuple(str, ChordQualities), tonic: Tuple(str, ChordQu
   # than one of it
   return (chord == tonic and tonic_count > 1) or (chord != tonic and quality not in qualities) or (quality in used_qualities and used_qualities[quality] > 1)
 
-def getNewChord(root: str, key: Key, qualities: List[ChordQualities]) -> Tuple(str, ChordQualities) or None:
+def getNewChord(root: str, key: Key, qualities: List[ChordQualities], isMajor: bool) -> Tuple(str, ChordQualities) or None:
   """
-  Purpose: Determines whether the given chord is in the given key
-  Signature:
+  Purpose: Returns a chord with the same root and a quality in qualities that is in the given key. If there is none, we return None.
   """
+  for quality in qualities:
+    root_scale = getScale(Key.getKey(root), isMajor)
+    notes = []
+    for interval in quality:
+      if 'b' in interval:
+        note = interval[-1]
+        
+      else: 
+        notes.append(root_scale[interval - 1])
+      # Check that the notes are in the key
+      # If so, return the new chord
+      return (root, quality)
+  return None
+

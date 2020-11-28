@@ -3,8 +3,8 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Algorithms.local_search import local_search
-from Data.Chords.qualities import ChordQualities
-from Data.Keys.keys import Key
+from Data.qualities import ChordQualities
+from Data.keys import Key
 
 class LocalSearchTests(unittest.TestCase):
 

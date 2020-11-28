@@ -1,8 +1,8 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Data.Chords.qualities import ChordQualities
-from Data.Keys.keys import Key
+from Data.qualities import ChordQualities
+from Data.keys import Key
 from typing import List, Tuple
 
 def getScale(key: Key, isMajor: bool) -> List[str]:

@@ -1,0 +1,4 @@
+
+class Flats(Enum):
+  
+  

@@ -1,6 +1,7 @@
 from enum import Enum 
+from typing import List
 
-class Key():
+class Key(Enum):
   """
   An enum that represents different keys and their major and minor scales.
   TODO: Minor scales
@@ -27,4 +28,20 @@ class Key():
   B_FLAT = {"major":["Bb", "C", "D", "Eb", "F", "G", "A"], "minor":[]}
   B = {"major":["B", "C#", "D#", "E", "F#", "G#", "A#"], "minor":[]}
   B_SHARP = {"major":["B#", "C##", "D##", "E#", "F##", "G##", "A##"], "minor":[]}
+
+  @staticmethod
+  def getKeys() -> List[Key]:
+    """
+    Purpose: Returns a list of all the keys
+    """
+    return [Key.C_FLAT, Key.C, Key.C_SHARP, Key.D_FLAT, Key.D, Key.D_SHARP, Key.E_FLAT, Key.E, Key.E_SHARP, Key.F_FLAT, Key.F, Key.F_SHARP, Key.G_FLAT, Key.G, Key.G_SHARP, Key.A_FLAT, Key.A, Key.A_SHARP, Key.B_FLAT, Key.B, Key.B_SHARP ]
+
+  @staticmethod
+  def getKey(root: str) -> Key:
+    """
+    Purpose: Returns the Key that has the given root 
+    """
+    for key in Key.getKeys():
+      if key['major'][0] == root:
+        return key
 
