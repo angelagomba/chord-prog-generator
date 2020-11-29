@@ -30,18 +30,27 @@ class Key(Enum):
   B_SHARP = {"major":["B#", "C##", "D##", "E#", "F##", "G##", "A##"], "minor":[]}
 
   @staticmethod
-  def getKeys() -> List[Key]:
+  def getKeys():
     """
     Purpose: Returns a list of all the keys
     """
     return [Key.C_FLAT, Key.C, Key.C_SHARP, Key.D_FLAT, Key.D, Key.D_SHARP, Key.E_FLAT, Key.E, Key.E_SHARP, Key.F_FLAT, Key.F, Key.F_SHARP, Key.G_FLAT, Key.G, Key.G_SHARP, Key.A_FLAT, Key.A, Key.A_SHARP, Key.B_FLAT, Key.B, Key.B_SHARP ]
 
   @staticmethod
-  def getKey(root: str) -> Key:
+  def getKey(root: str):
     """
     Purpose: Returns the Key that has the given root 
     """
     for key in Key.getKeys():
-      if key['major'][0] == root:
+      key_val = key.value
+      if key_val['major'][0] == root:
         return key
+
+  @staticmethod
+  def getScale(key, isMajor):
+    """
+    Purpose: Returns the scale of the given key
+    """
+    key_val = key.value
+    return key_val["major"] if isMajor else key_val["minor"]
 

@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
 from enum import Enum
-from interval import Interval
+from intervals import Interval
 
 class ChordQualities(Enum):
   """
@@ -19,6 +19,10 @@ class ChordQualities(Enum):
   # We will adapt our data structures to handle extended chords in a later milestone
   # MAJ9 = [Interval.TONIC, Interval.MAJ_THIRD, Interval.PERF_FIFTH, Interval.MAJ_SEVENTH, Interval.MAJ_NINTH] # maj9: 1 3 5 7 9
   # MIN9 = [] # min9: 1 b3 5 b7 9
+
+  @staticmethod
+  def getIntervals(quality):
+    return quality.value
 
 
   
