@@ -18,9 +18,5 @@ class Interval(Enum):
   MIN_SEVENTH = "b7"
   MAJ_SEVENTH = "7"
 
-  @staticmethod
-  def getInterval(interval):
-    """
-    Purpose: Returns the value of the given interval
-    """
-    return interval.value
+  def __str__(self):
+    return str(self.value)

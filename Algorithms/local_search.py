@@ -64,9 +64,6 @@ class LocalSearch(object):
       # If we did not find a solution, run the algorithm again
       if remaining_qualities:
         return self.local_search()
-    # TODO: Figure out where the timeout is supposed to go, and how it will return an incomplete solution
-    # NOTE: I feel like there might be an advantage if this is a class... we'd be able to store a temp solution
-    # and any other info as class variables.
     return self.chord_prog
 
   def createRandChordProg(self) -> List[Tuple[str, ChordQualities]]:
@@ -106,6 +103,7 @@ class LocalSearch(object):
     quality = chord[1]
     # We can replace a duplicate tonic, if the chord doesn't have a desired quality, or if it is a desired quality and we have more
     # than one of it
+    # TODO: Account for the tonic being able to be maj7
     return (chord == self.tonic and tonic_count > 1) or (chord != self.tonic and quality not in self.qualities) or (quality in used_qualities and used_qualities[quality] > 1)
 
   def getNewChord(self, root: str, qualities: List[ChordQualities]) -> Tuple[str, ChordQualities] or None:
@@ -116,13 +114,14 @@ class LocalSearch(object):
       root_scale = Key.getScale(Key.getKey(root), self.isMajor)
       isInKey = True
       for interval in ChordQualities.getIntervals(quality):
-        note = '' 
-        if 'b' in Interval.getInterval(interval):
-          root = Note.getNote(root_scale(interval[-1] - 1))
-          note = Note.getNote(root.getFlats()[0])
+        note = ''
+        interval = str(interval)
+        if 'b' in interval:
+          temp = Note.getNote(root_scale[int(interval[-1]) - 1])
+          note = Note.getNote(Note.getFlats(temp)[0])
         else: 
-          note = Note.getNote(root_scale[int(Interval.getInterval(interval)) - 1])
-        if inKey(note, self.key, self.isMajor):
+          note = Note.getNote(root_scale[int(interval) - 1])
+        if not inKey(note, self.key, self.isMajor):
           isInKey = False
           break
       if isInKey: 
