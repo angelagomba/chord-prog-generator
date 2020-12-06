@@ -3,14 +3,16 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Data.qualities import ChordQualities
 from Data.intervals import Interval
+from Data.keys import Key
 from typing import List
+from utils import getTonic, getTonicCount
 
 """
 We will leverage backtracking to build a chord progression of length numChords that contain each chord quality specified in qualities. 
 TODO: Describe how we will use backtracking to accomplish this.
 """
 
-def backtracking(key: str, numChords: int, qualities: List[ChordQualities]):
+def backtracking(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQualities]) -> List[List[Tuple[str, ChordQualities]]]:
   """
   Purpose: Returns a chord progression in the given key that contains the given qualities.
   TODO: We want to use enums.
@@ -19,3 +21,44 @@ def backtracking(key: str, numChords: int, qualities: List[ChordQualities]):
   :param qualities: The chord qualities the chord progression must have.
   """
   # TODO: Implement backtracking to generate a chord progression of length numChords.
+  """
+  Initialize empty array (res) of chord progressions
+  Memoize the used qualities so that we know how to calculate our backtracking condition
+  Backtracking condition: The next chord quality cannot be created 
+  Iterate through qualities, attempt to add a chord to the progression with that quality
+  If next chord quality cannot be created go back to the previous and assign new value
+  Return when res has numChords chords and all qualities used (remaining qualities is empty )
+
+  Choice: What chord (root note) to assign to the current quality
+  Goal: Given the choice we just made for the given quality, is the chord progression still solvable
+  - Within stack frame/individual iteration of recursion, we want to express our decision by iterating through
+    the notes in the key and attempting to assign chord with the current quality we are attempting to fill
+  """
+  # All of the chord progressions which meet the inputted constraints
+  res = []
+  possibleTonics = Key.getScale(key, true)
+  usedQualities = []
+  backtrackingDriver(possibleTonics, numChords, qualities, usedQualities, res, [], 0)
+  return res
+
+def backtrackingDriver(possibleTonics, numChords, qualities, usedQualities, res, progression, start):
+  # TODO: Account for 7th tonic chords
+  if len(progression) == numChords and start == len(qualities) and getTonic(true, scale=possibleTonics) in progression:
+    res.append(progression)
+  
+  for i in range(start, len(qualities)):
+    currQuality = qualities[i]
+    for note in possibleTonics:
+      if noteCanFormQuality(note, possibleTonics, currQuality):
+        chord = (note, currQuality)
+        usedQualities.append(currQuality)
+        progression.append(chord)
+        backtrackingDriver(possibleTonics, numChords - 1, qualities, usedQualities, res, progression, start + 1)
+      
+
+
+
+def noteCanFormQuality(note, possibleTonics, quality):
+
+
+      
