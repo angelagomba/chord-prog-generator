@@ -11,18 +11,18 @@ def getTonic(isMajor, key=None, scale=None) -> Tuple[str, ChordQualities]:
   Purpose: Returns the tonic of the given key or scale 
   """
   if not key and not scale:
-    # TODO: What is the best way to raise errors? Temporarily printing for now.
     print('Must call with key or scale.')
     pass
   scale = scale if scale else Key.getScale(key, isMajor)
-  # TODO: Check if there is a difference in tonics between major and minor
-  return (scale[0], ChordQualities.MAJ if isMajor else ChordQualities.MIN)
+  return (Note.getNote(scale[0]), ChordQualities.MAJ if isMajor else ChordQualities.MIN)
 
 def getTonicCount(tonic: Tuple[str, ChordQualities], chord_prog: List[Tuple[str, ChordQualities]]) -> int:
   """
-  Purpose: Returns the number of instances of the tonic chord in a chord progression.
+  Purpose: Returns the number of instances of the tonic note in a chord progression.
   """
-  return chord_prog.count(tonic)
+  tonic_note = tonic[0]
+  notes = [chord[0] for chord in chord_prog]
+  return notes.count(tonic_note)
 
 def inKey(note: Note, key: Key, isMajor: bool) -> bool:
   """

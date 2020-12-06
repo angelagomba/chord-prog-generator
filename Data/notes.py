@@ -76,6 +76,13 @@ class Note(Enum):
       if cur_note_val["note"] == note:
         return cur_note_val
     return None
+
+  @staticmethod
+  def getNoteName(note):
+    """
+    Purpose: Returns the Note string representation that matches the given note. If it doesn't find one, it returns None.
+    """
+    return note["note"]
   
   @staticmethod
   def getFlats(note):

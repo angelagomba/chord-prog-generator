@@ -20,11 +20,8 @@ where we change our current chord to a chord with a chord quality listed in qual
 are unable to meet all the constraints, we start the algorithm again with another randomly generated chord progression. Since local search 
 does not guarantee completeness, we will return the solution we have, whether complete or incomplete, before the end of the timeout.
 """
-# TODO: Set up notes as enums
-# Chord: (root note (str), ChordQuality)
 
-# Notes for parser: 
-# - It will need to check for duplicate qualities
+# Chord: (Note, ChordQuality)
 
 class LocalSearch(object):
 
@@ -73,7 +70,7 @@ class LocalSearch(object):
     """
     scale = Key.getScale(self.key, self.isMajor)
     root_notes = random.choices(scale, k=self.numChords)
-    chord_prog = [(note, diatonic_seq[scale.index(note)]) for note in root_notes]
+    chord_prog = [(Note.getNote(note), diatonic_seq[scale.index(note)]) for note in root_notes]
     # Check if the tonic is in the chord_prog. If not, replace the last chord as the tonic.
     # NOTE: We do this because we want our chord_prog to resolve.
     tonic_count = chord_prog.count(self.tonic)
@@ -103,15 +100,15 @@ class LocalSearch(object):
     quality = chord[1]
     # We can replace a duplicate tonic, if the chord doesn't have a desired quality, or if it is a desired quality and we have more
     # than one of it
-    # TODO: Account for the tonic being able to be maj7
     return (chord == self.tonic and tonic_count > 1) or (chord != self.tonic and quality not in self.qualities) or (quality in used_qualities and used_qualities[quality] > 1)
 
-  def getNewChord(self, root: str, qualities: List[ChordQualities]) -> Tuple[str, ChordQualities] or None:
+  def getNewChord(self, root: Note, qualities: List[ChordQualities]) -> Tuple[str, ChordQualities] or None:
     """
     Purpose: Returns a chord with the same root and a quality in qualities that is in the given key. If there is none, we return None.
     """
     for quality in qualities:
-      root_scale = Key.getScale(Key.getKey(root), self.isMajor)
+      root_note = Note.getNoteName(root)
+      root_scale = Key.getScale(Key.getKey(root_note), self.isMajor)
       isInKey = True
       for interval in ChordQualities.getIntervals(quality):
         note = ''
