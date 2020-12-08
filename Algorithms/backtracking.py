@@ -56,7 +56,7 @@ def backtrackingDriver(key: Key, isMajor: bool, scale: List[str], numChords: int
 def hasQualities(progression: List[Tuple[Note, ChordQualities]], qualities: List[ChordQualities]):
   usedQualities = [chord[1] for chord in progression]
   for quality in qualities:
-    if usedQualities.count(quality) == 0:
+    if usedQualities.count(quality) < qualities.count(quality):
       return False
   return True
 
