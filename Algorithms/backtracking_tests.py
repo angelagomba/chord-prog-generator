@@ -6,11 +6,13 @@ from Algorithms.backtracking import backtracking
 from Data.qualities import ChordQualities
 from Data.keys import Key
 
-class LocalSearchTests(unittest.TestCase):
+class BacktrackingTests(unittest.TestCase):
 
-  def test_runnning(self):
-    # self.assertEqual(backtracking(Key.C, True, 4, []), None)
-    print('res', backtracking(Key.C, True, 4, []))
+  def test_simple_chord_progs(self):
+    print(len(backtracking(Key.C, True, 4, [])))
+
+  def test_one_quality_chord_progs(self):
+    print(len(backtracking(Key.C, True, 4, [ChordQualities.MAJ7])))
 
 if __name__ == '__main__':
     unittest.main()

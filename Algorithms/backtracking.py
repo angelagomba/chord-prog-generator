@@ -6,7 +6,7 @@ from Data.intervals import Interval
 from Data.notes import Note
 from Data.keys import Key
 from typing import List, Tuple
-from utils import getTonic, getTonicCount
+from utils import getTonic, getTonicCount, chordInKey
 
 """
 We will leverage backtracking to build a chord progression of length numChords that contain each chord quality specified in qualities. 
@@ -38,19 +38,27 @@ def backtracking(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQ
   # All of the chord progressions which meet the inputted constraints
   res = []
   possibleTonics = Key.getScale(key, True)
-  backtrackingDriver(possibleTonics, numChords, qualities, res, [], 0)
+  backtrackingDriver(key, isMajor, possibleTonics, numChords, qualities, res, [], 0)
   return res
 
-def backtrackingDriver(scale: List[str], numChords: int, qualities: List[ChordQualities], res: List[List[Tuple[Note, ChordQualities]]], progression: List[Tuple[Note, ChordQualities]], start: int):
-  if len(progression) == numChords:
+def backtrackingDriver(key: Key, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQualities], res: List[List[Tuple[Note, ChordQualities]]], progression: List[Tuple[Note, ChordQualities]], start: int):
+  if len(progression) == numChords and hasQualities(progression, qualities):
     res.append(progression)
     return
   for i in range(start, len(scale)):
-    for 
-      backtrackingDriver(scale, numChords, qualities, res, progression + [chord], start + 1)
+    note = Note.getNote(scale[i])
+    for quality in ChordQualities.getAllQualities():
+      chord = chordInKey(note, quality, key, isMajor)
+      if chord:
+        backtrackingDriver(key, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1)
   
 
-# def hasQualities(progression: List[Tuple[Note, ChordQualities]], qualities: List[ChordQualities]):
+def hasQualities(progression: List[Tuple[Note, ChordQualities]], qualities: List[ChordQualities]):
+  usedQualities = [chord[1] for chord in progression]
+  for quality in qualities:
+    if usedQualities.count(quality) == 0:
+      return False
+  return True
 
 
 # def backtrackingDriver(possibleTonics, numChords, qualities, res, progression, start):
