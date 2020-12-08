@@ -24,5 +24,9 @@ class ChordQualities(Enum):
   def getIntervals(quality):
     return quality.value
 
+  @staticmethod
+  def getAllQualities():
+    return [quality for quality in ChordQualities]
+
 
   
