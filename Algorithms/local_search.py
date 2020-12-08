@@ -9,7 +9,7 @@ from Data.keys import Key
 from Data.notes import Note
 from Data.constants import diatonic_seq
 from typing import Dict, List, Tuple
-from utils import getTonic, getTonicCount, inKey
+from utils import getTonic, getTonicCount, inKey, chordInKey
 
 """
 We will leverage local search to build a chord progression of length numChords that contain each chord quality specified in qualities. 
@@ -107,21 +107,8 @@ class LocalSearch(object):
     Purpose: Returns a chord with the same root and a quality in qualities that is in the given key. If there is none, we return None.
     """
     for quality in qualities:
-      root_note = Note.getNoteName(root)
-      root_scale = Key.getScale(Key.getKey(root_note), self.isMajor)
-      isInKey = True
-      for interval in ChordQualities.getIntervals(quality):
-        note = ''
-        interval = str(interval)
-        if 'b' in interval:
-          temp = Note.getNote(root_scale[int(interval[-1]) - 1])
-          note = Note.getNote(Note.getFlats(temp)[0])
-        else: 
-          note = Note.getNote(root_scale[int(interval) - 1])
-        if not inKey(note, self.key, self.isMajor):
-          isInKey = False
-          break
-      if isInKey: 
-        return (root, quality)
+      potentialChord = chordInKey(root, quality, self.key, self.isMajor)
+      if potentialChord:
+        return potentialChord
     return None
 

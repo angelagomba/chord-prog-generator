@@ -58,7 +58,6 @@ class LocalSearchTests(unittest.TestCase):
     ls = LocalSearch(Key.A, True, 5, [ChordQualities.MIN7, ChordQualities.MAJ7])
     try:
       ls.local_search()
-      print(ls.chord_prog)
       self.assertEqual(len(ls.chord_prog), 5)
     except RecursionError:
       print('Unable to create chord prog')
