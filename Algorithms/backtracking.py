@@ -3,8 +3,9 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Data.qualities import ChordQualities
 from Data.intervals import Interval
+from Data.notes import Note
 from Data.keys import Key
-from typing import List
+from typing import List, Tuple
 from utils import getTonic, getTonicCount
 
 """
@@ -36,29 +37,52 @@ def backtracking(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQ
   """
   # All of the chord progressions which meet the inputted constraints
   res = []
-  possibleTonics = Key.getScale(key, true)
-  usedQualities = []
-  backtrackingDriver(possibleTonics, numChords, qualities, usedQualities, res, [], 0)
+  possibleTonics = Key.getScale(key, True)
+  backtrackingDriver(possibleTonics, numChords, qualities, res, [], 0)
   return res
 
-def backtrackingDriver(possibleTonics, numChords, qualities, usedQualities, res, progression, start):
-  # TODO: Account for 7th tonic chords
-  if len(progression) == numChords and start == len(qualities) and getTonic(true, scale=possibleTonics) in progression:
+def backtrackingDriver(scale: List[str], numChords: int, qualities: List[ChordQualities], res: List[List[Tuple[Note, ChordQualities]]], progression: List[Tuple[Note, ChordQualities]], start: int):
+  if len(progression) == numChords:
     res.append(progression)
+    return
+  for i in range(start, len(scale)):
+    for 
+      backtrackingDriver(scale, numChords, qualities, res, progression + [chord], start + 1)
   
-  for i in range(start, len(qualities)):
-    currQuality = qualities[i]
-    for note in possibleTonics:
-      if noteCanFormQuality(note, possibleTonics, currQuality):
-        chord = (note, currQuality)
-        usedQualities.append(currQuality)
-        progression.append(chord)
-        backtrackingDriver(possibleTonics, numChords - 1, qualities, usedQualities, res, progression, start + 1)
-      
+
+# def hasQualities(progression: List[Tuple[Note, ChordQualities]], qualities: List[ChordQualities]):
+
+
+# def backtrackingDriver(possibleTonics, numChords, qualities, res, progression, start):
+#   # TODO: Account for 7th tonic chords
+#   # Append results which meet the constraints to the resultant array
+#   if len(progression) == numChords and start == len(qualities) and getTonic(true, scale=possibleTonics) in progression:
+#     res.append(progression)
+  
+#   for i in range(start, len(qualities)):
+#     # Current variable to assign
+#     currQuality = qualities[i]
+#     # Search through domain for notes that can be assign to current quality
+#     for note in possibleTonics:
+#       if noteCanFormQuality(note, possibleTonics, currQuality):
+#         chord = (note, currQuality)
+#         progression.append(chord)
+#         backtrackingDriver(possibleTonics, numChords - 1, qualities, res, progression, start + 1)
+    
+
+"""
+Input: C, 3, [maj7, maj7]
+First Iteration: Searching for a maj7
+C -> can form maj7 -> 
+F -> can form maj7  ->
+G -> can form maj7 ->
+
+"""
 
 
 
-def noteCanFormQuality(note, possibleTonics, quality):
+# def noteCanFormQuality(note, possibleTonics, quality):
+  
 
 
       
