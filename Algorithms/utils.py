@@ -51,4 +51,16 @@ def chordInKey(root: Note, quality: ChordQualities, key: Key, isMajor: bool) -> 
     return (root, quality)
   return None
 
+def parseChordProg(prog: List[Tuple[Note, ChordQualities]]):
+  parsed_chord_prog = []
+  for chord in prog:
+    parsed_chord = ''
+    parsed_chord += Note.getNoteName(chord[0])
+    parsed_chord += chord[1].name
+    parsed_chord_prog.append(parsed_chord)
+  return parsed_chord_prog
+
+
+
+
 
