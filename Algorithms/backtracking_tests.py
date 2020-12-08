@@ -12,7 +12,10 @@ class BacktrackingTests(unittest.TestCase):
     print(len(backtracking(Key.C, True, 4, [])))
 
   def test_one_quality_chord_progs(self):
-    print(len(backtracking(Key.C, True, 4, [ChordQualities.MAJ7])))
+    print(backtracking(Key.C, True, 4, [ChordQualities.MAJ7]))
+
+  def test_three_quality_chord_progs(self):
+    print(backtracking(Key.C, True, 4, [ChordQualities.MAJ, ChordQualities.MAJ7, ChordQualities.DIM]))
 
 if __name__ == '__main__':
     unittest.main()

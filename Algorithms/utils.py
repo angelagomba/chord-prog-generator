@@ -31,11 +31,12 @@ def inKey(note: Note, key: Key, isMajor: bool) -> bool:
   note_reps = Note.getEquals(note)
   return not set(note_reps).isdisjoint(Key.getScale(key, isMajor))
 
-def chordInKey(note: Note, quality: ChordQualities, key: Key, isMajor: bool) -> Tuple[Note, ChordQualities] or None:
-  root_note = Note.getNoteName(note)
+def chordInKey(root: Note, quality: ChordQualities, key: Key, isMajor: bool) -> Tuple[Note, ChordQualities] or None:
+  root_note = Note.getNoteName(root)
   root_scale = Key.getScale(Key.getKey(root_note), isMajor)
   isInKey = True
-  for interval in ChordQualities.getIntervals(quality):
+  intervals = ChordQualities.getIntervals(quality)
+  for interval in intervals:
     note = ''
     interval = str(interval)
     if 'b' in interval:
@@ -46,8 +47,8 @@ def chordInKey(note: Note, quality: ChordQualities, key: Key, isMajor: bool) -> 
     if not inKey(note, key, isMajor):
       isInKey = False
       break
-    if isInKey: 
-      return (note, quality)
+  if isInKey: 
+    return (root, quality)
   return None
 
 
