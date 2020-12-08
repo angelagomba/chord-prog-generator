@@ -42,8 +42,9 @@ def backtracking(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQ
   return res
 
 def backtrackingDriver(key: Key, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQualities], res: List[List[Tuple[Note, ChordQualities]]], progression: List[Tuple[Note, ChordQualities]], start: int):
-  if len(progression) == numChords and hasQualities(progression, qualities):
-    res.append(progression)
+  if len(progression) == numChords:
+    if hasQualities(progression, qualities):
+      res.append(progression)
     return
   for i in range(start, len(scale)):
     note = Note.getNote(scale[i])
