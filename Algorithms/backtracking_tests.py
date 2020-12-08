@@ -8,11 +8,11 @@ from Data.keys import Key
 
 class BacktrackingTests(unittest.TestCase):
 
-  def test_simple_chord_progs(self):
-    print(len(backtracking(Key.C, True, 4, [])))
+  # def test_simple_chord_progs(self):
+  #   print(len(backtracking(Key.C, True, 4, [])))
 
   def test_one_quality_chord_progs(self):
-    print(len(backtracking(Key.C, True, 4, [ChordQualities.MAJ7])))
+    print(backtracking(Key.C, True, 4, [ChordQualities.MAJ7, ChordQualities.MIN7, ChordQualities.DIM])[:4])
 
 if __name__ == '__main__':
     unittest.main()
