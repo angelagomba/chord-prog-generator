@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '.'))
 from enum import Enum
 from intervals import Interval
 
-class ChordQualities(Enum):
+class ChordQuality(Enum):
   """
   An enum that represents different chord qualities, and the intervals that compose them.
   """
@@ -26,7 +26,7 @@ class ChordQualities(Enum):
 
   @staticmethod
   def getAllQualities():
-    return [quality for quality in ChordQualities]
+    return [quality for quality in ChordQuality]
 
 
   

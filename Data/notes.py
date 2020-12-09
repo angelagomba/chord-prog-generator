@@ -57,13 +57,7 @@ class Note(Enum):
     """
     Purpose: Returns a list of every note representation
     """
-    return [Note.C_DFLAT, Note.C_FLAT, Note.C, Note.C_SHARP, Note.C_DSHARP, 
-            Note.D_DFLAT, Note.D_FLAT, Note.D, Note.D_SHARP, Note.D_DSHARP, 
-            Note.E_DFLAT, Note.E_FLAT, Note.E, Note.E_SHARP, Note.E_DSHARP, 
-            Note.F_DFLAT, Note.F_FLAT, Note.F, Note.F_SHARP, Note.F_DSHARP,
-            Note.G_DFLAT, Note.G_FLAT, Note.G, Note.G_SHARP, Note.G_DSHARP,
-            Note.A_DFLAT, Note.A_FLAT, Note.A, Note.A_SHARP, Note.A_DSHARP,
-            Note.B_DFLAT, Note.B_FLAT, Note.B, Note.B_SHARP, Note.B_DSHARP]
+    return [note for note in Note]
 
   @staticmethod
   def getNote(note): 

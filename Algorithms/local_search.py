@@ -3,7 +3,7 @@ import os
 import random
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Data.qualities import ChordQualities
+from Data.qualities import ChordQuality
 from Data.intervals import Interval
 from Data.keys import Key
 from Data.notes import Note
@@ -25,7 +25,7 @@ does not guarantee completeness, we will return the solution we have, whether co
 
 class LocalSearch(object):
 
-  def __init__(self, key: Key, isMajor: bool, numChords: int, qualities: List[ChordQualities]):
+  def __init__(self, key: Key, isMajor: bool, numChords: int, qualities: List[ChordQuality]):
     self.key = key
     self.isMajor = isMajor
     self.numChords = numChords
@@ -33,10 +33,10 @@ class LocalSearch(object):
     self.tonic = getTonic(isMajor, key)
     self.chord_prog = [] # stores our current solution
 
-  def local_search(self) -> List[Tuple[str, ChordQualities]]:
+  def local_search(self) -> List[Tuple[str, ChordQuality]]:
     """
     Purpose: Returns a chord progression in the given key that contains the given qualities.
-    Signature: Key, bool, int, List[ChordQualities] -> List[Tuple[str, ChordQualities]]
+    Signature: Key, bool, int, List[ChordQuality] -> List[Tuple[str, ChordQuality]]
     :param key: The key the chord progression is in.
     :param qualities: The chord qualities the chord progression must have.
     """
@@ -63,7 +63,7 @@ class LocalSearch(object):
         return self.local_search()
     return self.chord_prog
 
-  def createRandChordProg(self) -> List[Tuple[str, ChordQualities]]:
+  def createRandChordProg(self) -> List[Tuple[str, ChordQuality]]:
     """
     Purpose: Returns a random chord progression of length numChords in the given key. isMajor determines whether the 
     chord progression is minor or major.
@@ -79,7 +79,7 @@ class LocalSearch(object):
       tonic_count = 1
     return chord_prog
 
-  def getUsedQualities(self) -> Dict[ChordQualities, int]:
+  def getUsedQualities(self) -> Dict[ChordQuality, int]:
     """
     Purpose: Returns a dictionary whose keys are chord qualities found in the given chord_prog and values are
     the count of those qualities in the chord progression.
@@ -92,7 +92,7 @@ class LocalSearch(object):
         used_qualities[chord[1]] = 1
     return used_qualities
 
-  def canReplaceChord(self, chord: Tuple[str, ChordQualities], used_qualities: Dict[ChordQualities, int]) -> bool:
+  def canReplaceChord(self, chord: Tuple[str, ChordQuality], used_qualities: Dict[ChordQuality, int]) -> bool:
     """
     Purpose: Determines whether or not we can replace the given chord within the chord progression.
     """
@@ -102,7 +102,7 @@ class LocalSearch(object):
     # than one of it
     return (chord == self.tonic and tonic_count > 1) or (chord != self.tonic and quality not in self.qualities) or (quality in used_qualities and used_qualities[quality] > 1)
 
-  def getNewChord(self, root: Note, qualities: List[ChordQualities]) -> Tuple[str, ChordQualities] or None:
+  def getNewChord(self, root: Note, qualities: List[ChordQuality]) -> Tuple[str, ChordQuality] or None:
     """
     Purpose: Returns a chord with the same root and a quality in qualities that is in the given key. If there is none, we return None.
     """

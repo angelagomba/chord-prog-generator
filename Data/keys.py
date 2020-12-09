@@ -4,11 +4,10 @@ from typing import List
 class Key(Enum):
   """
   An enum that represents different keys and their major and minor scales.
-  TODO: Minor scales
   """
 
   C_FLAT = {"major":["Cb", "Db", "Eb", "Fb", "Gb", "Ab", "Bb"], "minor":[]}
-  C = {"major":["C", "D", "E", "F", "G", "A", "B"], "minor": []}
+  C = {"major":["C", "D", "E", "F", "G", "A", "B"], "minor": ["C", "D", "Eb", "F", "G", "Ab", "Bb"]}
   C_SHARP = {"major":["C#", "D#", "E#", "F#", "G#", "A#", "B#"], "minor":[]}
   D_FLAT = {"major":["Db", "Eb", "F", "Gb", "Ab", "C"], "minor":[]}
   D = {"major":["D", "E", "F#", "G", "A", "B", "C#"], "minor":[]}
@@ -34,7 +33,7 @@ class Key(Enum):
     """
     Purpose: Returns a list of all the keys
     """
-    return [Key.C_FLAT, Key.C, Key.C_SHARP, Key.D_FLAT, Key.D, Key.D_SHARP, Key.E_FLAT, Key.E, Key.E_SHARP, Key.F_FLAT, Key.F, Key.F_SHARP, Key.G_FLAT, Key.G, Key.G_SHARP, Key.A_FLAT, Key.A, Key.A_SHARP, Key.B_FLAT, Key.B, Key.B_SHARP ]
+    return [key for key in Key]
 
   @staticmethod
   def getKey(root: str):

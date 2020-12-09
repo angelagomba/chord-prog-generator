@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Data.qualities import ChordQualities
+from Data.qualities import ChordQuality
 from Data.intervals import Interval
 from Data.notes import Note
 from Data.keys import Key
@@ -13,11 +13,11 @@ We will leverage backtracking to build a chord progression of length numChords t
 TODO: Describe how we will use backtracking to accomplish this.
 """
 
-def backtracking(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQualities]) -> List[List[Tuple[str, ChordQualities]]]:
+def backtracking(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQuality]) -> List[List[Tuple[str, ChordQuality]]]:
   """
   Purpose: Returns a chord progression in the given key that contains the given qualities.
   TODO: We want to use enums.
-  Signature: str, int, List[ChordQualities] -> List[List[str]]
+  Signature: str, int, List[ChordQuality] -> List[List[str]]
   :param key: The key the chord progression is in.
   :param qualities: The chord qualities the chord progression must have.
   """
@@ -42,20 +42,20 @@ def backtracking(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQ
   backtrackingDriver(key, tonicRoot, isMajor, possibleTonics, numChords, qualities, res, [], 0)
   return res
 
-def backtrackingDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQualities], res: List[List[Tuple[Note, ChordQualities]]], progression: List[Tuple[Note, ChordQualities]], start: int):
+def backtrackingDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQuality], res: List[List[Tuple[Note, ChordQuality]]], progression: List[Tuple[Note, ChordQuality]], start: int):
   if len(progression) == numChords:
     if hasQualities(progression, qualities) and hasTonic(progression, tonic):
       res.append(progression)
     return
   for i in range(start, len(scale)):
     note = Note.getNote(scale[i])
-    for quality in ChordQualities.getAllQualities():
+    for quality in ChordQuality.getAllQualities():
       chord = chordInKey(note, quality, key, isMajor)
       if chord:
         backtrackingDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1)
   
 
-def hasQualities(progression: List[Tuple[Note, ChordQualities]], qualities: List[ChordQualities]):
+def hasQualities(progression: List[Tuple[Note, ChordQuality]], qualities: List[ChordQuality]):
   usedQualities = [chord[1] for chord in progression]
   for quality in qualities:
     if usedQualities.count(quality) < qualities.count(quality):
@@ -63,7 +63,7 @@ def hasQualities(progression: List[Tuple[Note, ChordQualities]], qualities: List
   return True
 
 
-def hasTonic(progression: List[Tuple[Note, ChordQualities]], tonic: Note):
+def hasTonic(progression: List[Tuple[Note, ChordQuality]], tonic: Note):
   for chord in progression:
     if chord[0] == tonic:
       return True

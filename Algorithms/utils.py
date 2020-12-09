@@ -1,12 +1,12 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Data.qualities import ChordQualities
+from Data.qualities import ChordQuality
 from Data.keys import Key
 from Data.notes import Note
 from typing import List, Tuple
 
-def getTonic(isMajor, key=None, scale=None) -> Tuple[str, ChordQualities]:
+def getTonic(isMajor, key=None, scale=None) -> Tuple[str, ChordQuality]:
   """
   Purpose: Returns the tonic of the given key or scale 
   """
@@ -14,9 +14,9 @@ def getTonic(isMajor, key=None, scale=None) -> Tuple[str, ChordQualities]:
     print('Must call with key or scale.')
     pass
   scale = scale if scale else Key.getScale(key, isMajor)
-  return (Note.getNote(scale[0]), ChordQualities.MAJ if isMajor else ChordQualities.MIN)
+  return (Note.getNote(scale[0]), ChordQuality.MAJ if isMajor else ChordQuality.MIN)
 
-def getTonicCount(tonic: Tuple[str, ChordQualities], chord_prog: List[Tuple[str, ChordQualities]]) -> int:
+def getTonicCount(tonic: Tuple[str, ChordQuality], chord_prog: List[Tuple[str, ChordQuality]]) -> int:
   """
   Purpose: Returns the number of instances of the tonic note in a chord progression.
   """
@@ -31,11 +31,11 @@ def inKey(note: Note, key: Key, isMajor: bool) -> bool:
   note_reps = Note.getEquals(note)
   return not set(note_reps).isdisjoint(Key.getScale(key, isMajor))
 
-def chordInKey(root: Note, quality: ChordQualities, key: Key, isMajor: bool) -> Tuple[Note, ChordQualities] or None:
+def chordInKey(root: Note, quality: ChordQuality, key: Key, isMajor: bool) -> Tuple[Note, ChordQuality] or None:
   root_note = Note.getNoteName(root)
   root_scale = Key.getScale(Key.getKey(root_note), isMajor)
   isInKey = True
-  intervals = ChordQualities.getIntervals(quality)
+  intervals = ChordQuality.getIntervals(quality)
   for interval in intervals:
     note = ''
     interval = str(interval)
@@ -51,7 +51,7 @@ def chordInKey(root: Note, quality: ChordQualities, key: Key, isMajor: bool) -> 
     return (root, quality)
   return None
 
-def parseChordProg(prog: List[Tuple[Note, ChordQualities]]):
+def parseChordProg(prog: List[Tuple[Note, ChordQuality]]):
   parsed_chord_prog = []
   for chord in prog:
     parsed_chord = ''
