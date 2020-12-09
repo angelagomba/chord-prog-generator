@@ -1,0 +1,14 @@
+# TODO
+- [ ] Update README
+  - [ ] Include CSP Problem Definition (note from Prof: make sure it is in mathematical notation)
+- [ ] Final Paper
+- [x] Add minor keys data
+  - [ ] Add support for minor keys in backtracking
+  - [x] Add support for minor keys in local search
+- [ ] Add extended chords data
+  - [ ] Add support for extended chords in backtracking
+  - [ ] Add support for extended chords in local search
+- [ ] Optimize backtracking to use MRV or Forward Checking
+  - [ ] Test different backtracking methods to different data sets and compare results
+- [ ] Optimize local search with more advanced methods
+  - [ ] Test different local search methods to different data sets and compare results
