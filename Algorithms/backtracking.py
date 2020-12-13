@@ -1,5 +1,6 @@
 import os
 import sys
+import copy
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Data.qualities import ChordQuality
 from Data.intervals import Interval
@@ -53,7 +54,32 @@ def backtrackingDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], n
       chord = chordInKey(note, quality, key, isMajor)
       if chord:
         backtrackingDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1)
-  
+
+
+def backtrackingFC(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQuality]) -> List[List[Tuple[str, ChordQuality]]]:
+  res = []
+  possibleTonics = Key.getScale(key, True)
+  tonicRoot = getTonic(isMajor, key=key)[0]
+  remainingQualities = copy.copy(qualities)
+  backtrackingFCDriver(key, tonicRoot, isMajor, possibleTonics, numChords, qualities, res, [], 0, remainingQualities)
+  return res
+
+def backtrackingFCDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQuality], res: List[List[Tuple[Note, ChordQuality]]], progression: List[Tuple[Note, ChordQuality]], start: int, remainingQualities: List[ChordQuality]):
+  if len(remainingQualities) > numChords - len(progression):
+    return 
+  if len(progression) == numChords:
+    if hasQualities(progression, qualities) and hasTonic(progression, tonic):
+      res.append(progression)
+    return
+  for i in range(start, len(scale)):
+    note = Note.getNote(scale[i])
+    for quality in ChordQuality.getAllQualities():
+      chord = chordInKey(note, quality, key, isMajor)
+      if chord:
+        if quality in remainingQualities:
+          remainingQualities.remove(quality)
+        backtrackingFCDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1, remainingQualities)
+
 
 def hasQualities(progression: List[Tuple[Note, ChordQuality]], qualities: List[ChordQuality]):
   usedQualities = [chord[1] for chord in progression]
