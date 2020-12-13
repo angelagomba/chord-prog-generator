@@ -6,7 +6,7 @@ from Data.qualities import ChordQuality
 from Data.intervals import Interval
 from Data.notes import Note
 from Data.keys import Key
-from typing import List, Tuple
+from typing import List, Tuple, Set
 from utils import getTonic, getTonicCount, chordInKey
 
 """
@@ -79,6 +79,35 @@ def backtrackingFCDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str],
         if quality in remainingQualities:
           remainingQualities.remove(quality)
         backtrackingFCDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1, remainingQualities)
+
+
+def backtrackingConflictSet(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQuality]) -> List[List[Tuple[str, ChordQuality]]]:
+  res = []
+  possibleTonics = Key.getScale(key, True)
+  tonicRoot = getTonic(isMajor, key=key)[0]
+  noGood = set()
+  backtrackingFCDriver(key, tonicRoot, isMajor, possibleTonics, numChords, qualities, res, [], 0, noGood)
+  return res
+
+
+def backtrackingConflictSetDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQuality], res: List[List[Tuple[Note, ChordQuality]]], progression: List[Tuple[Note, ChordQuality]], start: int, noGood: Set[Tuple[Note, ChordQuality]]):
+  if len(progression) == numChords:
+    if hasQualities(progression, qualities) and hasTonic(progression, tonic):
+      res.append(progression)
+    return
+  for i in range(start, len(scale)):
+    note = Note.getNote(scale[i])
+    for quality in ChordQuality.getAllQualities():
+      potentialChord = (note, quality)
+      if potentialChord in noGood:
+        return
+      chord = chordInKey(note, quality, key, isMajor)
+      if chord:
+        backtrackingConflictSetDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1, noGood)
+      else:
+        noGood.add(potentialChord)
+
+  
 
 
 def hasQualities(progression: List[Tuple[Note, ChordQuality]], qualities: List[ChordQuality]):
