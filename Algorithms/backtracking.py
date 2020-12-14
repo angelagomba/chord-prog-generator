@@ -6,7 +6,7 @@ from Data.qualities import ChordQuality
 from Data.intervals import Interval
 from Data.notes import Note
 from Data.keys import Key
-from typing import List, Tuple, Set
+from typing import List, Tuple, Set, Dict
 from utils import getTonic, getTonicCount, chordInKey
 
 """
@@ -106,6 +106,70 @@ def backtrackingConflictSetDriver(key: Key, tonic: Note, isMajor: bool, scale: L
         backtrackingConflictSetDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1, noGood)
       else:
         noGood.add(potentialChord)
+
+def backtrackingGAC(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQuality]) -> List[List[Tuple[str, ChordQuality]]]:
+  res = []
+  possibleTonics = Key.getScale(key, True)
+  tonicRoot = getTonic(isMajor, key=key)[0]
+  allChords = {}
+  for note in possibleTonics:
+    for quality in ChordQuality.getAllQualities():
+      if note not in allChords:
+        allChords[note] = [quality]
+      else:
+        allChords[note].append(quality)
+  # allChords = set(allChordsList)
+  backtrackingGACDriver(key, tonicRoot, isMajor, possibleTonics, numChords, qualities, res, [], 0, allChords)
+  return res
+
+def backtrackingGACDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQuality], res: List[List[Tuple[Note, ChordQuality]]], progression: List[Tuple[Note, ChordQuality]], start: int, possibleChords: Dict[Note, List[ChordQuality]]):
+  if len(progression) == numChords:
+    res.append(progression)
+  for i in range(start, len(possibleChords)):
+    root = Note.getNote(scale[i])
+    backtrackingGACDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [root], start + 1, possibleChords)
+
+  # if len(progression) == numChords:
+  #   if hasQualities(progression, qualities) and hasTonic(progression, tonic):
+  #     res.append(progression)
+  #   return
+  
+  # for note in list(possibleChords.keys())[start:len(possibleChords)]:
+  #   root = Note.getNote(note)
+  #   for quality in possibleChords[note]:
+  #     possibleChord = chordInKey(root, quality, key, isMajor)
+  #     if possibleChord:
+  #       backtrackingGACDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [possibleChord], start + 1, possibleChords)
+  #     else:
+  #       possibleChords[note].remove(quality)
+
+
+def backtrackingGACPre(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQuality]) -> List[List[Tuple[str, ChordQuality]]]:
+  res = []
+  possibleTonics = Key.getScale(key, True)
+  tonicRoot = getTonic(isMajor, key=key)[0]
+  noGood = set()
+  backtrackingFCDriver(key, tonicRoot, isMajor, possibleTonics, numChords, qualities, res, [], 0, noGood)
+  return res
+
+def backtrackingGACPreDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQuality], res: List[List[Tuple[Note, ChordQuality]]], progression: List[Tuple[Note, ChordQuality]], start: int, noGood: Set[Tuple[Note, ChordQuality]]):
+  if len(progression) == numChords:
+    if hasQualities(progression, qualities) and hasTonic(progression, tonic):
+      res.append(progression)
+    return
+  for i in range(start, len(scale)):
+    note = Note.getNote(scale[i])
+    for quality in ChordQuality.getAllQualities():
+      potentialChord = (note, quality)
+      if potentialChord in noGood:
+        return
+      chord = chordInKey(note, quality, key, isMajor)
+      if chord:
+        backtrackingGACDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1, noGood)
+      else:
+        noGood.add(potentialChord)
+
+
 
   
 

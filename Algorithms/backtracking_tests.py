@@ -2,7 +2,7 @@ import unittest
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Algorithms.backtracking import backtracking, backtrackingFC, backtrackingConflictSet
+from Algorithms.backtracking import backtracking, backtrackingFC, backtrackingConflictSet, backtrackingGAC
 from Data.qualities import ChordQuality
 from Data.keys import Key
 from Algorithms.utils import parseChordProg
@@ -16,7 +16,7 @@ class BacktrackingTests(unittest.TestCase):
     print(backtracking(Key.C, True, 4, [ChordQuality.MAJ7]))
 
   def test_three_quality_chord_progs(self):
-    print(backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])[:4])
+    print(len([parseChordProg(progression) for progression in backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])]))
 
   def test_four_quality_chord_progs(self):
     print([parseChordProg(progression) for progression in backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])])
@@ -38,6 +38,9 @@ class BacktrackingTests(unittest.TestCase):
 
   def test_four_quality_chord_progs_nogood(self):
     print([parseChordProg(progression) for progression in backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])])
+
+  def test_three_quality_chord_progs_gac(self):
+    print([parseChordProg(progression) for progression in backtrackingGAC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])])
 
 
 if __name__ == '__main__':
