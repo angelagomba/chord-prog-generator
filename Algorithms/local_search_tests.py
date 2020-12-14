@@ -9,72 +9,163 @@ from utils import parseChordProg
 
 class LocalSearchTests(unittest.TestCase):
 
-  def test_chord_prog_simple(self):
-    """
-    Purpose: Ensures that the chord progression returned has the correct length.
-    """
-    ls = LocalSearch(Key.C, True, 4, [])
+  #----------------------------------------------------------------------------------------------------------------
+  # SIMPLE HILL CLIMBING
+  #----------------------------------------------------------------------------------------------------------------
+  def test_shc_no_qualities(self):
+    numChords = 4
+    ls = LocalSearch(Key.C, True, numChords, [])
     try:
-      ls.local_search()
-      self.assertEqual(len(ls.chord_prog), 4)
+      ls.simple_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
     except RecursionError:
-      self.assertEqual(len(ls.chord_prog), 4)
+      self.assertEqual(len(ls.chord_prog), numChords)
   
-  def test_chord_prog_complex_1(self):
-    """
-    """
-    ls = LocalSearch(Key.C, True, 4, [ChordQuality.MIN7])
+  def test_shc_one_quality(self):
+    numChords = 4
+    ls = LocalSearch(Key.C, True, numChords, [ChordQuality.MIN7])
     try:
-      ls.local_search()
-      self.assertEqual(len(ls.chord_prog), 4)
+      ls.simple_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
     except RecursionError:
-      print('Unable to create chord prog')
-      self.assertEqual(len(ls.chord_prog), 4)
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
 
-  def test_chord_prog_complex_2(self):
-    """
-    """
-    ls = LocalSearch(Key.D, True, 4, [ChordQuality.MAJ7, ChordQuality.HALF_DIM])
+  def test_shc_two_qualities(self):
+    numChords = 4
+    ls = LocalSearch(Key.D, True, numChords, [ChordQuality.MAJ7, ChordQuality.HALF_DIM])
     try:
-      ls.local_search()
-      self.assertEqual(len(ls.chord_prog), 4)
+      ls.simple_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
     except RecursionError:
-      print('Unable to create chord prog')
-      self.assertEqual(len(ls.chord_prog), 4)
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
 
-  def test_chord_prog_complex_3(self):
-    """
-    """
-    ls = LocalSearch(Key.C, True, 5, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DOM7])
+  def test_shc_three_qualities(self):
+    numChords = 5
+    ls = LocalSearch(Key.C, True, numChords, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DOM7])
     try:
-      ls.local_search()
-      print(parseChordProg(ls.chord_prog))
-      self.assertEqual(len(ls.chord_prog), 5)
+      ls.simple_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
     except RecursionError:
-      print('Unable to create chord prog')
-      self.assertEqual(len(ls.chord_prog), 5)
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
 
-  def test_chord_prog_complex_4(self):
-    """
-    """
-    ls = LocalSearch(Key.A, True, 5, [ChordQuality.MIN7, ChordQuality.MAJ7])
+  def test_shc_five_qualities(self):
+    numChords = 8
+    ls = LocalSearch(Key.G, True, numChords, [ChordQuality.MIN7, ChordQuality.MAJ7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])
     try:
-      ls.local_search()
-      self.assertEqual(len(ls.chord_prog), 5)
+      ls.simple_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
     except RecursionError:
-      print('Unable to create chord prog')
-      self.assertEqual(len(ls.chord_prog), 5)
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
+  
+  #----------------------------------------------------------------------------------------------------------------
+  # STEEPEST-ASCENT HILL CLIMBING
+  #----------------------------------------------------------------------------------------------------------------
+  def test_sahc_no_qualities(self):
+    numChords = 4
+    ls = LocalSearch(Key.C, True, numChords, [])
+    try:
+      ls.steepest_ascent_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
+    except RecursionError:
+      self.assertEqual(len(ls.chord_prog), numChords)
+  
+  def test_sahc_one_quality(self):
+    numChords = 4
+    ls = LocalSearch(Key.C, True, numChords, [ChordQuality.MIN7])
+    try:
+      ls.steepest_ascent_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
+    except RecursionError:
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
 
-  def test_chord_prog_complex_5(self):
-    """
-    """
-    ls = LocalSearch(Key.G, True, 8, [ChordQuality.MIN7, ChordQuality.MAJ7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])
+  def test_sahc_two_qualities(self):
+    numChords = 4
+    ls = LocalSearch(Key.D, True, numChords, [ChordQuality.MAJ7, ChordQuality.HALF_DIM])
     try:
-      ls.local_search()
-      self.assertEqual(len(ls.chord_prog), 8)
+      ls.steepest_ascent_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
     except RecursionError:
-      print('Unable to create chord prog')
-      self.assertEqual(len(ls.chord_prog), 8)
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
+
+  def test_sahc_three_qualities(self):
+    numChords = 5
+    ls = LocalSearch(Key.C, True, numChords, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DOM7])
+    try:
+      ls.steepest_ascent_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
+    except RecursionError:
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
+
+  def test_sahc_five_qualities(self):
+    numChords = 8
+    ls = LocalSearch(Key.G, True, numChords, [ChordQuality.MIN7, ChordQuality.MAJ7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])
+    try:
+      prog = ls.steepest_ascent_hill_climbing()
+      print(parseChordProg(prog))
+      self.assertEqual(len(prog), numChords)
+    except RecursionError:
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
+  
+  #----------------------------------------------------------------------------------------------------------------
+  # STOCHASTIC HILL CLIMBING
+  #----------------------------------------------------------------------------------------------------------------
+  def test_sthc_no_qualities(self):
+    numChords = 4
+    ls = LocalSearch(Key.C, True, numChords, [])
+    try:
+      ls.stochastic_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
+    except RecursionError:
+      self.assertEqual(len(ls.chord_prog), numChords)
+  
+  def test_sthc_one_quality(self):
+    numChords = 4
+    ls = LocalSearch(Key.C, True, numChords, [ChordQuality.MIN7])
+    try:
+      ls.stochastic_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
+    except RecursionError:
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
+
+  def test_sthc_two_qualities(self):
+    numChords = 4
+    ls = LocalSearch(Key.D, True, numChords, [ChordQuality.MAJ7, ChordQuality.HALF_DIM])
+    try:
+      ls.stochastic_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
+    except RecursionError:
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
+
+  def test_sthc_three_qualities(self):
+    numChords = 5
+    ls = LocalSearch(Key.C, True, numChords, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DOM7])
+    try:
+      ls.stochastic_hill_climbing()
+      self.assertEqual(len(ls.chord_prog), numChords)
+    except RecursionError:
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
+
+  def test_sthc_five_qualities(self):
+    numChords = 8
+    ls = LocalSearch(Key.G, True, numChords, [ChordQuality.MIN7, ChordQuality.MAJ7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])
+    try:
+      prog = ls.stochastic_hill_climbing()
+      print(parseChordProg(prog))
+      self.assertEqual(len(prog), numChords)
+    except RecursionError:
+      print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
+      self.assertEqual(len(ls.chord_prog), numChords)
 
 if __name__ == '__main__':
     unittest.main()
