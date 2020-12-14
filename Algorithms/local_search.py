@@ -55,6 +55,9 @@ class LocalSearch(object):
   # ----------------------------------------------------------------------------------------------------------------
   
   def hill_climbing(self, method: LSMethod) -> List[Tuple[Note, ChordQuality]]:
+    """
+    Purpose: Returns a chord progression using the given hill climbing method.
+    """
     # Randomly pick numChords amount of notes in the scale of the given key
     self.chord_prog = self.createRandChordProg()
     # Filter through which qualities we still need
@@ -77,6 +80,9 @@ class LocalSearch(object):
     return self.chord_prog
 
   def runEvaluatorMethod(self, method: LSMethod, index: int, note: Note, successors: List[ChordQuality]):
+    """
+    Purpose: Executes the evaluation function for the given method.
+    """
     if method == LSMethod.SIMPLE_HC:
       self.simple_hill_climbing_evaluator(index, note, successors)
     elif method == LSMethod.STEEPEST_ASCENT_HC:
@@ -101,13 +107,15 @@ class LocalSearch(object):
 
   def simple_hill_climbing(self) -> List[Tuple[Note, ChordQuality]]:
     """
-    Purpose: Returns a chord progression in the given key that contains the given qualities.
-    NOTE: We utilize the simple hill climbing algorithm, which examines each neighboring node and selects the 
-    first neighboring node which optimizes the cost (length of remaining_qualities) of the next node.
+    Purpose: Returns a chord progression in the given key that contains the given qualities using simple hill climbing.
     """
     return self.hill_climbing(LSMethod.SIMPLE_HC)
 
   def simple_hill_climbing_evaluator(self, index: int, note: Note, successors: List[ChordQuality]):
+    """
+    Purpose: The evaluation function for simple hill climbing, which examines each neighboring node and selects the 
+    first neighboring node which optimizes the cost (length of remaining_qualities) of the next node.
+    """
     for successor in successors:
       if successor in self.remaining_qualities:
         self.chord_prog[index] = (note, successor)
@@ -116,13 +124,15 @@ class LocalSearch(object):
 
   def steepest_ascent_hill_climbing(self) -> List[Tuple[Note, ChordQuality]]:
     """
-    Purpose: Returns a chord progression in the given key that contains the given qualities.
-    NOTE: We utilize the steepest-ascent hill climbing algorithm, which examines all neighboring nodes and selects the 
-    node closest to the solution state as of next node, i.e. selects the node that minimizes the length of remaining_qualities.
+    Purpose: Returns a chord progression in the given key that contains the given qualities using steepest ascent hill climbing.
     """
     return self.hill_climbing(LSMethod.STEEPEST_ASCENT_HC)
   
   def steepest_ascent_hill_climbing_evaluator(self, index: int, note: Note, successors: List[ChordQuality]):
+    """
+    Purpose: The evaluation function for steepest ascent hill climbing, which examines all neighboring nodes and selects the 
+    node closest to the solution state as of next node, i.e. selects the node that minimizes the length of remaining_qualities.
+    """
     intersection = set(successors).intersection(self.remaining_qualities)
     if len(intersection) > 0:
       quality = next(iter(intersection))
@@ -132,13 +142,15 @@ class LocalSearch(object):
 
   def stochastic_hill_climbing(self) -> List[Tuple[Note, ChordQuality]]:
     """
-    Purpose: Returns a chord progression in the given key that contains the given qualities.
-    NOTE: We utilize the stochastic hill climbing algorithm, which selects a neighboring node at random and decides
-    whether to move to that node or to examine another.
+    Purpose: Returns a chord progression in the given key that contains the given qualities using stochastic hill climbing.
     """
     return self.hill_climbing(LSMethod.STOCHASTIC_HC)
   
   def stochastic_hill_climbing_evaluator(self, index: int, note: Note, successors: List[ChordQuality]):
+    """
+    Purpose: The evaluation function for stochastic hill climbing, which selects a neighboring node at random and decides
+    whether to move to that node or to examine another.
+    """
     while successors:
       quality = random.choice(successors)
       # Remove it from successors so we don't explore it again
