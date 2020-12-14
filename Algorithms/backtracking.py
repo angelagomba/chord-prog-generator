@@ -85,12 +85,12 @@ def backtrackingConflictSet(key: Key, isMajor: bool, numChords: int, qualities: 
   res = []
   possibleTonics = Key.getScale(key, True)
   tonicRoot = getTonic(isMajor, key=key)[0]
-  noGood = set()
-  backtrackingFCDriver(key, tonicRoot, isMajor, possibleTonics, numChords, qualities, res, [], 0, noGood)
+  noGood = []
+  backtrackingConflictSetDriver(key, tonicRoot, isMajor, possibleTonics, numChords, qualities, res, [], 0, noGood)
   return res
 
 
-def backtrackingConflictSetDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQuality], res: List[List[Tuple[Note, ChordQuality]]], progression: List[Tuple[Note, ChordQuality]], start: int, noGood: Set[Tuple[Note, ChordQuality]]):
+def backtrackingConflictSetDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQuality], res: List[List[Tuple[Note, ChordQuality]]], progression: List[Tuple[Note, ChordQuality]], start: int, noGood: List[Tuple[Note, ChordQuality]]):
   if len(progression) == numChords:
     if hasQualities(progression, qualities) and hasTonic(progression, tonic):
       res.append(progression)
@@ -100,12 +100,12 @@ def backtrackingConflictSetDriver(key: Key, tonic: Note, isMajor: bool, scale: L
     for quality in ChordQuality.getAllQualities():
       potentialChord = (note, quality)
       if potentialChord in noGood:
-        return
+        continue
       chord = chordInKey(note, quality, key, isMajor)
       if chord:
         backtrackingConflictSetDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1, noGood)
       else:
-        noGood.add(potentialChord)
+        noGood.append(potentialChord)
 
 def backtrackingGAC(key: Key, isMajor: bool, numChords: int, qualities: List[ChordQuality]) -> List[List[Tuple[str, ChordQuality]]]:
   res = []

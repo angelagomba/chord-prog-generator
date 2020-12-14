@@ -34,7 +34,7 @@ class BacktrackingTests(unittest.TestCase):
     print(len(backtrackingConflictSet(Key.C, True, 4, [])))
   
   def test_three_quality_chord_progs_nogood(self):
-    print(backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])[:4])
+    print(len(backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])))
 
   def test_four_quality_chord_progs_nogood(self):
     print([parseChordProg(progression) for progression in backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])])
