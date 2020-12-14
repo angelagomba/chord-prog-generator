@@ -16,7 +16,7 @@ class BacktrackingTests(unittest.TestCase):
     print(backtracking(Key.C, True, 4, [ChordQuality.MAJ7]))
 
   def test_three_quality_chord_progs(self):
-    print(len([parseChordProg(progression) for progression in backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])]))
+    print([parseChordProg(progression) for progression in backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])])
 
   def test_four_quality_chord_progs(self):
     print([parseChordProg(progression) for progression in backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])])
@@ -40,7 +40,7 @@ class BacktrackingTests(unittest.TestCase):
     print([parseChordProg(progression) for progression in backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])])
 
   def test_three_quality_chord_progs_gac(self):
-    print([parseChordProg(progression) for progression in backtrackingGAC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])])
+    print(len([parseChordProg(progression) for progression in backtrackingGAC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])]))
 
 
 if __name__ == '__main__':
