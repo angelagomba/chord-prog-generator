@@ -142,28 +142,30 @@ def backtrackingGACPre(key: Key, isMajor: bool, numChords: int, qualities: List[
   res = []
   possibleTonics = Key.getScale(key, True)
   tonicRoot = getTonic(isMajor, key=key)[0]
-  noGood = set()
-  backtrackingFCDriver(key, tonicRoot, isMajor, possibleTonics, numChords, qualities, res, [], 0, noGood)
+  allChordsInKey = {}
+  allQualities = ChordQuality.getAllQualities()
+  for note in possibleTonics:
+    root = Note.getNote(note)
+    for quality in allQualities:
+      chord = chordInKey(root, quality, key, isMajor)
+      if chord:
+        if note in allChordsInKey:
+          allChordsInKey[note].append(quality)
+        else:
+          allChordsInKey[note] = [quality]
+  backtrackingGACPreDriver(key, tonicRoot, isMajor, possibleTonics, numChords, qualities, res, [], 0, allChordsInKey)
   return res
 
-def backtrackingGACPreDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQuality], res: List[List[Tuple[Note, ChordQuality]]], progression: List[Tuple[Note, ChordQuality]], start: int, noGood: Set[Tuple[Note, ChordQuality]]):
+def backtrackingGACPreDriver(key: Key, tonic: Note, isMajor: bool, scale: List[str], numChords: int, qualities: List[ChordQuality], res: List[List[Tuple[Note, ChordQuality]]], progression: List[Tuple[Note, ChordQuality]], start: int, possibleChords: Dict[Note, List[ChordQuality]]):
   if len(progression) == numChords:
     if hasQualities(progression, qualities) and hasTonic(progression, tonic):
       res.append(progression)
     return
-  for i in range(start, len(scale)):
-    note = Note.getNote(scale[i])
-    for quality in ChordQuality.getAllQualities():
-      potentialChord = (note, quality)
-      if potentialChord in noGood:
-        return
-      chord = chordInKey(note, quality, key, isMajor)
-      if chord:
-        backtrackingGACDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [chord], start + 1, noGood)
-      else:
-        noGood.add(potentialChord)
-
-
+  
+  for note in list(possibleChords.keys())[start:len(possibleChords)]:
+    possibleChordQualities = possibleChords[note]
+    for quality in possibleChordQualities:
+      backtrackingGACPreDriver(key, tonic, isMajor, scale, numChords, qualities, res, progression + [(Note.getNote(note), quality)], start + 1, possibleChords)
 
   
 
