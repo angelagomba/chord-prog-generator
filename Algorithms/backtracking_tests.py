@@ -9,53 +9,72 @@ from Algorithms.utils import parseChordProg
 
 class BacktrackingTests(unittest.TestCase):
 
+  #----------------------------------------------------------------------------------------------------------------
+  # NAIVE BACKTRACKING
+  #----------------------------------------------------------------------------------------------------------------
   def test_simple_chord_progs(self):
-    print(len(backtracking(Key.C, True, 4, [])))
+    self.assertEqual(len(backtracking(Key.C, True, 4, [])), 1920)
 
   def test_one_quality_chord_progs(self):
-    print(backtracking(Key.C, True, 4, [ChordQuality.MAJ7]))
+    self.assertEqual(len(backtracking(Key.C, True, 4, [ChordQuality.MAJ7])), 1227)
 
   def test_three_quality_chord_progs(self):
-    print([parseChordProg(progression) for progression in backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])])
+    self.assertEqual(len(backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])), 111)
 
   def test_four_quality_chord_progs(self):
-    print(len([parseChordProg(progression) for progression in backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])]))
+    self.assertEqual(len(backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])), 12)
+
+
+  
+  #----------------------------------------------------------------------------------------------------------------
+  # FORWARD CHECKING
+  #----------------------------------------------------------------------------------------------------------------
 
   def test_simple_chord_progs_fc(self):
-    print(len(backtrackingFC(Key.C, True, 4, [])))
-  
+    self.assertEqual(len(backtrackingFC(Key.C, True, 4, [])), 1920)
+
   def test_three_quality_chord_progs_fc(self):
-    print(backtrackingFC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])[:4])
+    self.assertEqual(len(backtrackingFC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])), 111)
 
   def test_four_quality_chord_progs_fc(self):
-    print([parseChordProg(progression) for progression in backtrackingFC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])])
+    self.assertEqual(len(backtrackingFC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])), 12)
 
+  #----------------------------------------------------------------------------------------------------------------
+  # CONFLICT
+  #----------------------------------------------------------------------------------------------------------------
   def test_simple_chord_progs_nogood(self):
-    print(len(backtrackingConflictSet(Key.C, True, 4, [])))
+    self.assertEqual(len(backtrackingConflictSet(Key.C, True, 4, [])), 1920)
   
   def test_three_quality_chord_progs_nogood(self):
-    print(len(backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])))
+    self.assertEqual(len(backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])), 111)
 
   def test_four_quality_chord_progs_nogood(self):
-    print(len([parseChordProg(progression) for progression in backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])]))
+    self.assertEqual(len(backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])), 12)
 
+  #----------------------------------------------------------------------------------------------------------------
+  # GAC
+  #----------------------------------------------------------------------------------------------------------------
   def test_simple_chord_progs_gac(self):
-    print(len(backtrackingGAC(Key.C, True, 4, [])))
+    self.assertEqual(len(backtrackingGAC(Key.C, True, 4, [])), 1920)
 
   def test_three_quality_chord_progs_gac(self):
-    print(len([parseChordProg(progression) for progression in backtrackingGAC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])]))
+    self.assertEqual(len(backtrackingGAC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])), 111)
   
   def test_four_quality_chord_progs_gac(self):
-    print(len([parseChordProg(progression) for progression in backtrackingGAC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])]))
+    self.assertEqual(len(backtrackingGAC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])), 12)
   
+
+  #----------------------------------------------------------------------------------------------------------------
+  # GAC PRECOMPUTE
+  #----------------------------------------------------------------------------------------------------------------
   def test_simple_chord_progs_gac_pre(self):
-    print(len(backtrackingGACPre(Key.C, True, 4, [])))
+    self.assertEqual(len(backtrackingGACPre(Key.C, True, 4, [])), 1920)
 
   def test_three_quality_chord_progs_gac_pre(self):
-    print(len([parseChordProg(progression) for progression in backtrackingGACPre(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])]))
+    self.assertEqual(len(backtrackingGACPre(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM])), 111)
   
   def test_four_quality_chord_progs_gac_pre(self):
-    print(len([parseChordProg(progression) for progression in backtrackingGACPre(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])]))
+    self.assertEqual(len(backtrackingGACPre(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM])), 12)
 
 
 if __name__ == '__main__':
