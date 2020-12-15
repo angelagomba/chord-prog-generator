@@ -1,19 +1,33 @@
 import unittest
 import os
 import sys
+import timeit
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Algorithms.backtracking import backtracking, backtrackingFC, backtrackingConflictSet, backtrackingGAC, backtrackingGACPre
 from Data.qualities import ChordQuality
 from Data.keys import Key
 from Algorithms.utils import parseChordProg
 
-class BacktrackingTests(unittest.TestCase):
 
+
+SETUP = '''from Algorithms.backtracking import backtracking, backtrackingFC, backtrackingConflictSet, backtrackingGAC, backtrackingGACPre
+from Data.qualities import ChordQuality
+from Data.keys import Key
+from Algorithms.utils import parseChordProg
+              '''
+class BacktrackingTests(unittest.TestCase):
   #----------------------------------------------------------------------------------------------------------------
   # NAIVE BACKTRACKING
   #----------------------------------------------------------------------------------------------------------------
   def test_simple_chord_progs(self):
     self.assertEqual(len(backtracking(Key.C, True, 4, [])), 1920)
+    print('Backtracking average time simple 4:', (timeit.timeit(setup=SETUP,stmt='backtracking(Key.C, True, 4, [])', number=100) / 100))
+    print('Backtracking minimum time simple 4:', min(timeit.repeat(setup=SETUP,stmt='backtracking(Key.C, True, 4, [])', repeat=10, number=1)))
+
+
+  def test_simple_chord_progs_8(self):
+    # self.assertEqual(len(backtracking(Key.C, True, 8, [])), 1920)
+    print('Backtracking time simple 8:', timeit.timeit(setup=SETUP,stmt='backtracking(Key.C, True, 4, [])', number=1))
 
   def test_one_quality_chord_progs(self):
     self.assertEqual(len(backtracking(Key.C, True, 4, [ChordQuality.MAJ7])), 1227)
