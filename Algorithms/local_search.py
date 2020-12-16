@@ -62,9 +62,9 @@ class LocalSearch(object):
         # We replace a chord only if it's quality is not one of the desired qualities, or if it is 
         # one of the desired qualities but we have duplicates
         if self.canReplaceChord(chord):
-          successors = self.getSuccessors(chord[0])
+          neighbors = self.getNeighbors(chord[0])
           # The cost at each node is the length of remaining_qualities
-          self.runEvaluatorMethod(method, i, chord[0], successors)
+          self.runEvaluatorMethod(method, i, chord[0], neighbors)
         if not self.remaining_qualities:
           break
       # If we did not find a solution, run the algorithm again
@@ -72,16 +72,16 @@ class LocalSearch(object):
         self.runHCMethodAgain(method)
     return self.chord_prog
 
-  def runEvaluatorMethod(self, method: LSMethod, index: int, note: Note, successors: List[ChordQuality]):
+  def runEvaluatorMethod(self, method: LSMethod, index: int, note: Note, neighbors: List[ChordQuality]):
     """
     Purpose: Executes the evaluation function for the given method.
     """
     if method == LSMethod.SIMPLE_HC:
-      self.simple_hill_climbing_evaluator(index, note, successors)
+      self.simple_hill_climbing_evaluator(index, note, neighbors)
     elif method == LSMethod.STEEPEST_ASCENT_HC:
-      self.steepest_ascent_hill_climbing_evaluator(index, note, successors)
+      self.steepest_ascent_hill_climbing_evaluator(index, note, neighbors)
     elif method == LSMethod.STOCHASTIC_HC:
-      self.stochastic_hill_climbing_evaluator(index, note, successors)
+      self.stochastic_hill_climbing_evaluator(index, note, neighbors)
   
   def runHCMethodAgain(self, method: LSMethod):
     """
@@ -104,16 +104,16 @@ class LocalSearch(object):
     """
     return self.hill_climbing(LSMethod.SIMPLE_HC)
 
-  def simple_hill_climbing_evaluator(self, index: int, note: Note, successors: List[ChordQuality]):
+  def simple_hill_climbing_evaluator(self, index: int, note: Note, neighbors: List[ChordQuality]):
     """
     Purpose: The evaluation function for simple hill climbing, which examines each neighboring node and selects the 
     first neighboring node which optimizes the cost (length of remaining_qualities) of the next node.
     """
-    for successor in successors:
-      if successor in self.remaining_qualities:
-        self.chord_prog[index] = (note, successor)
-        self.remaining_qualities.remove(successor)
-        self.updateUsedQualities(successor)
+    for neighbor in neighbors:
+      if neighbor in self.remaining_qualities:
+        self.chord_prog[index] = (note, neighbor)
+        self.remaining_qualities.remove(neighbor)
+        self.updateUsedQualities(neighbor)
 
   def steepest_ascent_hill_climbing(self) -> List[Tuple[Note, ChordQuality]]:
     """
@@ -121,12 +121,12 @@ class LocalSearch(object):
     """
     return self.hill_climbing(LSMethod.STEEPEST_ASCENT_HC)
   
-  def steepest_ascent_hill_climbing_evaluator(self, index: int, note: Note, successors: List[ChordQuality]):
+  def steepest_ascent_hill_climbing_evaluator(self, index: int, note: Note, neighbors: List[ChordQuality]):
     """
     Purpose: The evaluation function for steepest ascent hill climbing, which examines all neighboring nodes and selects the 
     node closest to the solution state as of next node, i.e. selects the node that minimizes the length of remaining_qualities.
     """
-    intersection = set(successors).intersection(self.remaining_qualities)
+    intersection = set(neighbors).intersection(self.remaining_qualities)
     if len(intersection) > 0:
       quality = next(iter(intersection))
       self.chord_prog[index] = (note, quality)
@@ -139,15 +139,15 @@ class LocalSearch(object):
     """
     return self.hill_climbing(LSMethod.STOCHASTIC_HC)
   
-  def stochastic_hill_climbing_evaluator(self, index: int, note: Note, successors: List[ChordQuality]):
+  def stochastic_hill_climbing_evaluator(self, index: int, note: Note, neighbors: List[ChordQuality]):
     """
     Purpose: The evaluation function for stochastic hill climbing, which selects a neighboring node at random and decides
     whether to move to that node or to examine another.
     """
-    while successors:
-      quality = random.choice(successors)
-      # Remove it from successors so we don't explore it again
-      successors.remove(quality)
+    while neighbors:
+      quality = random.choice(neighbors)
+      # Remove it from neighbors so we don't explore it again
+      neighbors.remove(quality)
       if quality in self.remaining_qualities:
         self.chord_prog[index] = (note, quality)
         self.remaining_qualities.remove(quality)
@@ -201,18 +201,18 @@ class LocalSearch(object):
       else:
         self.remaining_qualities.append(quality)
 
-  def getSuccessors(self, note: Note) -> List[ChordQuality]:
+  def getNeighbors(self, note: Note) -> List[ChordQuality]:
     """
-    Purpose: Returns a list of successors. A successor is a quality that fits the root note
+    Purpose: Returns a list of neighboring nodes. A neighbor is a quality that fits the root note
     in the given key.
     """
-    successors = []
+    neighbors = []
     qualities = ChordQuality.getAllQualities()
     for quality in qualities:
       potentialChord = chordInKey(note, quality, self.key, self.isMajor)
       if potentialChord:
-        successors.append(quality)
-    return successors
+        neighbors.append(quality)
+    return neighbors
 
   def canReplaceChord(self, chord: Tuple[Note, ChordQuality]) -> bool:
     """
