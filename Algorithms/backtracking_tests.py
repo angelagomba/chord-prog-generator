@@ -41,9 +41,9 @@ class BacktrackingTests(unittest.TestCase):
     print('Backtracking average time two qualities 6:', (timeit.timeit(setup=SETUP,stmt='backtracking(Key.C, True, 6, [ChordQuality.MAJ7, ChordQuality.HALF_DIM])', number=10) / 10))
 
   def test_bt_four_qualities_complex(self):
-    self.assertEqual(len(backtracking(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 0)
-    # Average time (10 trials) =  4.3554903299
-    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtracking(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=10) / 10))
+    # self.assertEqual(len(backtracking(Key.C, True, 5, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 0)
+    # # Average time (10 trials) = 33.42242633940041
+    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtracking(Key.C, True, 5, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=10) / 10))
 
   def test_bt_four_qualities_4(self):
     self.assertEqual(len(backtracking(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 12)
@@ -80,9 +80,9 @@ class BacktrackingTests(unittest.TestCase):
     print('Backtracking average time two qualities 6:', (timeit.timeit(setup=SETUP,stmt='backtrackingFC(Key.C, True, 6, [ChordQuality.MAJ7, ChordQuality.HALF_DIM])', number=10) / 10))
 
   def test_fc_four_qualities_complex(self):
-    self.assertEqual(len(backtrackingFC(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 0)
-    # Average time (10 trials) = 3.144163405
-    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtrackingFC(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=10) / 10))
+    # self.assertEqual(len(backtrackingFC(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 0)
+    # # Average time (10 trials) = 31.043304070000886
+    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtrackingFC(Key.C, True, 5, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=1) / 1))
 
   def test_fc_four_qualities_4(self):
     self.assertEqual(len(backtrackingFC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 1227)
@@ -118,9 +118,9 @@ class BacktrackingTests(unittest.TestCase):
     print('Backtracking average time two qualities 6:', (timeit.timeit(setup=SETUP,stmt='backtrackingConflictSet(Key.C, True, 6, [ChordQuality.MAJ7, ChordQuality.HALF_DIM])', number=10) / 10))
 
   def test_nogood_four_qualities_complex(self):
-    self.assertEqual(len(backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 0)
-    # Average time (10 trials) = 1.7854113329999999
-    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=10) / 10))
+    # self.assertEqual(len(backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 0)
+    # # Average time (10 trials) = 13.156292114996177
+    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtrackingConflictSet(Key.C, True, 5, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=1) / 1))
 
   def test_nogood_four_qualities_4(self):
     self.assertEqual(len(backtrackingConflictSet(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 1227)
@@ -156,9 +156,9 @@ class BacktrackingTests(unittest.TestCase):
     print('Backtracking average time two qualities 6:', (timeit.timeit(setup=SETUP,stmt='backtrackingGAC(Key.C, True, 6, [ChordQuality.MAJ7, ChordQuality.HALF_DIM])', number=10) / 10))
 
   def test_gac_four_qualities_complex(self):
-    self.assertEqual(len(backtrackingGAC(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 0)
-    # Average time (10 trials) = 1.778081717
-    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtrackingGAC(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=10) / 10))
+    # self.assertEqual(len(backtrackingGAC(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 0)
+    # # Average time (10 trials) = 13.791618632996688
+    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtrackingGAC(Key.C, True, 5, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=1) / 1))
 
   def test_gac_four_qualities_4(self):
     self.assertEqual(len(backtrackingGAC(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 1227)
@@ -194,9 +194,9 @@ class BacktrackingTests(unittest.TestCase):
     print('Backtracking average time two qualities 6:', (timeit.timeit(setup=SETUP,stmt='backtrackingGACPre(Key.C, True, 6, [ChordQuality.MAJ7, ChordQuality.HALF_DIM])', number=10) / 10))
 
   def test_gac_pre_four_qualities_complex(self):
-    self.assertEqual(len(backtrackingGAC(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 12)
-    # Average time (10 trials) = 0.32107733000000005
-    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtrackingGACPre(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=10) / 10))
+    # self.assertEqual(len(backtrackingGAC(Key.C, True, 4, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 12)
+    # # Average time (10 trials) = 2.4270983189999242
+    print('Backtracking average time four qualities complex:', (timeit.timeit(setup=SETUP,stmt='backtrackingGACPre(Key.C, True, 5, [ChordQuality.MIN7, ChordQuality.DIM, ChordQuality.HALF_DIM, ChordQuality.DOM7])', number=1) / 1))
 
   def test_gac_pre_four_qualities_4(self):
     self.assertEqual(len(backtrackingGACPre(Key.C, True, 4, [ChordQuality.MAJ7, ChordQuality.MIN7, ChordQuality.HALF_DIM, ChordQuality.DOM7])), 12)

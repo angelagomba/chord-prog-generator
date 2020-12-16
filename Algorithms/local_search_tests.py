@@ -360,6 +360,7 @@ class LocalSearchTests(unittest.TestCase):
     try:
       ls.stochastic_hill_climbing()
       self.assertEqual(len(ls.chord_prog), numChords)
+      print(parseChordProg(ls.chord_prog))
       print('Local search average time 4 qualities 5:', timeit.timeit(setup=SETUP,stmt=FOUR_5_RUN_STHC, number=100) / 100)
     except RecursionError:
       print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
