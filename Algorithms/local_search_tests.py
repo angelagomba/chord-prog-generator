@@ -171,7 +171,7 @@ class LocalSearchTests(unittest.TestCase):
     try:
       ls.simple_hill_climbing()
       self.assertEqual(len(ls.chord_prog), numChords)
-      print('Local search average time 4 qualities 4:', timeit.timeit(setup=SETUP,stmt=INCOMPLETE_SHC, number=100) / 100)
+      print('Local search average time 4 qualities 4:', timeit.timeit(setup=SETUP,stmt=FOUR_4_RUN_SHC, number=100) / 100)
     except RecursionError:
       print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
       self.assertEqual(len(ls.chord_prog), numChords)
@@ -182,10 +182,9 @@ class LocalSearchTests(unittest.TestCase):
     try:
       ls.simple_hill_climbing()
       self.assertEqual(len(ls.chord_prog), numChords)
-      print('Local search average time 4 qualities 4:', timeit.timeit(setup=SETUP,stmt=FOUR_4_RUN_SHC, number=100) / 100)
+      print('Local search average time 4 qualities 4:', timeit.timeit(setup=SETUP,stmt=INCOMPLETE_SHC, number=100) / 100)
     except RecursionError:
       print('Unable to create chord prog with the following qualities: ', [quality.name for quality in ls.qualities])
-      print('Local search average time 4 qualities 4:', timeit.timeit(setup=SETUP,stmt=FOUR_4_RUN_SHC, number=100) / 100)
       self.assertEqual(len(ls.chord_prog), numChords)
 
   def test_shc_four_qualities_5(self):
